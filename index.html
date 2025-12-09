@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES Криптографія</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <h1>🔒 AES</h1>
+            <p>Advanced Encryption Standard</p>
+        </div>
+
+        <div class="nav-item active" onclick="showSection('encrypt')">
+            <div class="nav-item-title">🔐 Шифрування</div>
+            <div class="nav-item-desc">Захистіть ваші дані</div>
+        </div>
+
+        <div class="nav-item" onclick="showSection('decrypt')">
+            <div class="nav-item-title">🔓 Розшифрування</div>
+            <div class="nav-item-desc">Відновіть дані</div>
+        </div>
+
+        <div class="nav-item" onclick="showSection('generate')">
+            <div class="nav-item-title">🔑 Генератор ключів</div>
+            <div class="nav-item-desc">Створіть безпечний ключ</div>
+        </div>
+
+        <div class="nav-item" onclick="showSection('info')">
+            <div class="nav-item-title">ℹ️ Інформація</div>
+            <div class="nav-item-desc">Про алгоритм AES</div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- Секція шифрування -->
+        <div id="encrypt" class="section active">
+            <div class="section-header">
+                <h2>Шифрування даних</h2>
+                <p>Захистіть ваше повідомлення за допомогою AES шифрування</p>
+            </div>
+
+            <div class="info-banner">
+                💡 AES (Advanced Encryption Standard) - це симетричний алгоритм шифрування, який використовується урядами та організаціями по всьому світу.
+            </div>
+
+            <div class="content-grid">
+                <div class="content-box">
+                    <h3>Налаштування</h3>
+                    
+                    <div class="form-group">
+                        <label>Розмір ключа:</label>
+                        <div class="mode-selector">
+                            <div class="mode-option selected" onclick="selectKeySize(128)">
+                                AES-128
+                            </div>
+                            <div class="mode-option" onclick="selectKeySize(192)">
+                                AES-192
+                            </div>
+                            <div class="mode-option" onclick="selectKeySize(256)">
+                                AES-256
+                            </div>
+                        </div>
+                        <p class="info-text">Більший розмір = вища безпека</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ключ шифрування:</label>
+                        <input type="text" id="encryptKey" placeholder="Введіть або згенеруйте ключ">
+                        <p class="info-text">Використовуйте складний ключ для максимальної безпеки</p>
+                    </div>
+                </div>
+
+                <div class="content-box">
+                    <h3>Повідомлення</h3>
+                    
+                    <div class="form-group">
+                        <label>Текст для шифрування:</label>
+                        <textarea id="plaintext" placeholder="Введіть текст, який потрібно зашифрувати..."></textarea>
+                    </div>
+
+                    <button class="btn" onclick="encryptMessage()">🔒 Зашифрувати</button>
+                </div>
+            </div>
+
+            <div id="encryptResult"></div>
+        </div>
+
+        <!-- Секція розшифрування -->
+        <div id="decrypt" class="section">
+            <div class="section-header">
+                <h2>Розшифрування даних</h2>
+                <p>Відновіть оригінальне повідомлення</p>
+            </div>
+
+            <div class="content-grid">
+                <div class="content-box">
+                    <h3>Ключ</h3>
+                    
+                    <div class="form-group">
+                        <label>Ключ розшифрування:</label>
+                        <input type="text" id="decryptKey" placeholder="Введіть ключ">
+                        <p class="info-text">Використовуйте той самий ключ, що і для шифрування</p>
+                    </div>
+                </div>
+
+                <div class="content-box">
+                    <h3>Зашифровані дані</h3>
+                    
+                    <div class="form-group">
+                        <label>Зашифрований текст:</label>
+                        <textarea id="ciphertext" placeholder="Вставте зашифрований текст..."></textarea>
+                    </div>
+
+                    <button class="btn" onclick="decryptMessage()">🔓 Розшифрувати</button>
+                </div>
+            </div>
+
+            <div id="decryptResult"></div>
+        </div>
+
+        <!-- Секція генератора ключів -->
+        <div id="generate" class="section">
+            <div class="section-header">
+                <h2>Генератор ключів</h2>
+                <p>Створіть криптографічно стійкий ключ</p>
+            </div>
+
+            <div class="content-box" style="max-width: 700px; margin: 0 auto;">
+                <div class="form-group">
+                    <label>Довжина ключа:</label>
+                    <select id="keyLength">
+                        <option value="16">128 біт (16 символів)</option>
+                        <option value="24">192 біти (24 символи)</option>
+                        <option value="32" selected>256 біт (32 символи)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Включити:</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                        <label style="color: #888;">
+                            <input type="checkbox" id="includeUpper" checked> Великі літери
+                        </label>
+                        <label style="color: #888;">
+                            <input type="checkbox" id="includeLower" checked> Малі літери
+                        </label>
+                        <label style="color: #888;">
+                            <input type="checkbox" id="includeNumbers" checked> Цифри
+                        </label>
+                        <label style="color: #888;">
+                            <input type="checkbox" id="includeSpecial" checked> Спецсимволи
+                        </label>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="generateKey()">🎲 Згенерувати ключ</button>
+
+                <div id="generatedKeyResult"></div>
+            </div>
+        </div>
+
+        <!-- Секція інформації -->
+        <div id="info" class="section">
+            <div class="section-header">
+                <h2>Про AES</h2>
+                <p>Стандарт симетричного шифрування</p>
+            </div>
+
+            <div class="content-box">
+                <h3>Що таке AES?</h3>
+                <p style="color: #ccc; line-height: 1.8; margin-top: 15px;">
+                    Advanced Encryption Standard (AES) - це симетричний алгоритм блочного шифрування, прийнятий урядом США в 2001 році. 
+                    Він є одним з найпоширеніших і найбезпечніших методів шифрування даних у світі.
+                </p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">128-256</div>
+                    <div class="stat-label">Біт ключа</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">128</div>
+                    <div class="stat-label">Біт блоку</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">10-14</div>
+                    <div class="stat-label">Раундів</div>
+                </div>
+            </div>
+
+            <div class="content-grid" style="margin-top: 30px;">
+                <div class="content-box">
+                    <h3>Переваги AES</h3>
+                    <ul style="color: #ccc; line-height: 2; margin-top: 15px; padding-left: 20px;">
+                        <li>Високий рівень безпеки</li>
+                        <li>Швидка робота</li>
+                        <li>Ефективність на різних платформах</li>
+                        <li>Міжнародний стандарт</li>
+                        <li>Стійкість до атак</li>
+                    </ul>
+                </div>
+                <div class="content-box">
+                    <h3>Застосування</h3>
+                    <ul style="color: #ccc; line-height: 2; margin-top: 15px; padding-left: 20px;">
+                        <li>Шифрування файлів</li>
+                        <li>Безпечний обмін даними</li>
+                        <li>VPN з'єднання</li>
+                        <li>Бездротові мережі (WPA2/WPA3)</li>
+                        <li>Фінансові транзакції</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
